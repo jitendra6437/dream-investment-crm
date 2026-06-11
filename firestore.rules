@@ -1,0 +1,117 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net default catch-all: DENY ALL
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Global Helpers
+    // To prevent spoofing and validate sessions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isUrlVerified() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // CRMUser validation check
+    function isValidCRMUser(data) {
+      return data.id is string && data.id.size() <= 128
+          && data.name is string && data.name.size() <= 128
+          && data.email is string && data.email.size() <= 128
+          && data.role is string && (data.role == 'Super Admin' || data.role == 'Admin' || data.role == 'Manager' || data.role == 'Sales Executive' || data.role == 'Telecaller')
+          && data.isActive is bool;
+    }
+
+    // User Collection Rules
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create, update: if isUrlVerified() && isValidId(userId) && isValidCRMUser(incoming());
+      allow delete: if isUrlVerified() && isValidId(userId);
+    }
+
+    // Project Collection Rules
+    match /projects/{projectId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isUrlVerified() && isValidId(projectId) 
+          && incoming().name is string && incoming().name.size() <= 200;
+      allow delete: if isUrlVerified() && isValidId(projectId);
+    }
+
+    // Lead Collection Rules
+    match /leads/{leadId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn() && resource.data.assignedTo is string;
+      allow create: if isUrlVerified() && isValidId(leadId) 
+          && incoming().name is string && incoming().name.size() <= 150
+          && incoming().mobile is string && incoming().mobile.size() <= 20;
+      allow update: if isUrlVerified() && isValidId(leadId)
+          && incoming().name is string && incoming().name.size() <= 150;
+      allow delete: if isUrlVerified() && isValidId(leadId);
+    }
+
+    // Task Collection Rules
+    match /tasks/{taskId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isUrlVerified() && isValidId(taskId)
+          && incoming().clientName is string && incoming().clientName.size() <= 150;
+      allow delete: if isUrlVerified() && isValidId(taskId);
+    }
+
+    // Site Visit Collection Rules
+    match /site_visits/{visitId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isUrlVerified() && isValidId(visitId)
+          && incoming().clientName is string && incoming().clientName.size() <= 150;
+      allow delete: if isUrlVerified() && isValidId(visitId);
+    }
+
+    // Deal Collection Rules
+    match /deals/{dealId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isUrlVerified() && isValidId(dealId)
+          && incoming().clientName is string && incoming().clientName.size() <= 150;
+      allow delete: if isUrlVerified() && isValidId(dealId);
+    }
+
+    // Activity Logs Collection Rules
+    match /activities/{activityId} {
+      allow get, list: if isSignedIn();
+      allow create: if isUrlVerified() && isValidId(activityId)
+          && incoming().description is string && incoming().description.size() <= 1000;
+      allow update, delete: if false; // Logs are immutable once created
+    }
+
+    // App Global Settings Collection Rules
+    match /settings/{settingsId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isUrlVerified() && isValidId(settingsId)
+          && incoming().companyName is string && incoming().companyName.size() <= 150;
+      allow delete: if isUrlVerified() && isValidId(settingsId);
+    }
+
+    // Automation Rules Collection Rules
+    match /automations/{automationId} {
+      allow get, list: if isSignedIn();
+      allow create, update: if isUrlVerified() && isValidId(automationId)
+          && incoming().name is string && incoming().name.size() <= 150;
+      allow delete: if isUrlVerified() && isValidId(automationId);
+    }
+  }
+}

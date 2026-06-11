@@ -1,0 +1,247 @@
+{
+  "entities": {
+    "CRMUser": {
+      "title": "CRMUser",
+      "description": "Information about agency representative or admin roles",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["Super Admin", "Admin", "Manager", "Sales Executive", "Telecaller"] },
+        "isActive": { "type": "boolean" },
+        "dailyTarget": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "email", "role", "isActive"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Real estate properties and builder project listings",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "builderName": { "type": "string" },
+        "location": { "type": "string" },
+        "city": { "type": "string" },
+        "area": { "type": "string" },
+        "propertyType": { "type": "array" },
+        "bhkOptions": { "type": "array" },
+        "priceMin": { "type": "number" },
+        "priceMax": { "type": "number" },
+        "possessionStatus": { "type": "string" },
+        "reraNumber": { "type": "string" },
+        "amenities": { "type": "array" },
+        "googleMapLink": { "type": "string" },
+        "commissionStructure": { "type": "string" },
+        "availableInventory": { "type": "string" },
+        "status": { "type": "string", "enum": ["Active", "Upcoming", "Sold Out"] },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "name", "builderName", "location", "city", "priceMin", "priceMax"]
+    },
+    "Lead": {
+      "title": "Lead",
+      "description": "Sourced and acquired sales campaign lead profiles",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "mobile": { "type": "string" },
+        "email": { "type": "string" },
+        "city": { "type": "string" },
+        "locality": { "type": "string" },
+        "propertyRequirement": { "type": "string" },
+        "buyRentResale": { "type": "string", "enum": ["Buy", "Rent", "Resale"] },
+        "budgetMin": { "type": "number" },
+        "budgetMax": { "type": "number" },
+        "propertyType": { "type": "string" },
+        "bhk": { "type": "string" },
+        "purpose": { "type": "string" },
+        "source": { "type": "string" },
+        "projectInterested": { "type": "string" },
+        "status": { "type": "string" },
+        "priority": { "type": "string" },
+        "assignedTo": { "type": "string" },
+        "assignedToName": { "type": "string" },
+        "createdBy": { "type": "string" },
+        "createdByName": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "nextFollowUpDate": { "type": "string" },
+        "notes": { "type": "string" },
+        "tags": { "type": "array" }
+      },
+      "required": ["id", "name", "mobile", "status", "priority"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Follow-up schedule task action list",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "leadId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "mobile": { "type": "string" },
+        "type": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "dueTime": { "type": "string" },
+        "priority": { "type": "string" },
+        "assignedTo": { "type": "string" },
+        "assignedToName": { "type": "string" },
+        "status": { "type": "string" },
+        "notes": { "type": "string" },
+        "outcome": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "leadId", "clientName", "type", "dueDate", "status"]
+    },
+    "SiteVisit": {
+      "title": "SiteVisit",
+      "description": "Tours, inspections and physically accompanying clients",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "leadId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "mobile": { "type": "string" },
+        "projectName": { "type": "string" },
+        "visitDate": { "type": "string" },
+        "visitTime": { "type": "string" },
+        "salesPerson": { "type": "string" },
+        "status": { "type": "string" },
+        "pickupRequired": { "type": "string" },
+        "meetingLocation": { "type": "string" },
+        "notes": { "type": "string" },
+        "clientFeedback": { "type": "string" },
+        "clientRating": { "type": "number" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "leadId", "clientName", "projectName", "visitDate", "status"]
+    },
+    "Deal": {
+      "title": "Deal",
+      "description": "Financial and registration bookkeeping record ledger",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "leadId": { "type": "string" },
+        "clientName": { "type": "string" },
+        "projectName": { "type": "string" },
+        "unitDetails": { "type": "string" },
+        "dealValue": { "type": "number" },
+        "bookingAmount": { "type": "number" },
+        "commissionPercent": { "type": "number" },
+        "expectedCommission": { "type": "number" },
+        "receivedCommission": { "type": "number" },
+        "pendingCommission": { "type": "number" },
+        "stage": { "type": "string" },
+        "closingDate": { "type": "string" },
+        "salesPerson": { "type": "string" },
+        "salesPersonName": { "type": "string" },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": [
+        "id",
+        "leadId",
+        "clientName",
+        "projectName",
+        "dealValue",
+        "bookingAmount",
+        "expectedCommission",
+        "stage"
+      ]
+    },
+    "Activity": {
+      "title": "Activity",
+      "description": "Global user or system timeline logs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "leadId": { "type": "string" },
+        "type": { "type": "string" },
+        "description": { "type": "string" },
+        "performedBy": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "type", "description", "createdAt"]
+    },
+    "CRMSettings": {
+      "title": "CRMSettings",
+      "description": "Global custom configurations",
+      "type": "object",
+      "properties": {
+        "companyName": { "type": "string" },
+        "companyPhone": { "type": "string" },
+        "companyAddress": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "leadStatuses": { "type": "array" },
+        "leadSources": { "type": "array" },
+        "propertyTypes": { "type": "array" },
+        "lostReasons": { "type": "array" },
+        "taskTypes": { "type": "array" },
+        "whatsappTemplates": { "type": "array" }
+      },
+      "required": ["companyName", "companyPhone"]
+    },
+    "AutomationRule": {
+      "title": "AutomationRule",
+      "description": "Rule trigger engine setup config",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "trigger": { "type": "string" },
+        "action": { "type": "string" },
+        "actionValue": { "type": "string" },
+        "isActive": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "trigger", "action", "isActive"]
+    }
+  },
+  "firestore": {
+    "users": {
+      "schema": "CRMUser",
+      "description": "Collection of all active/inactive agency users"
+    },
+    "projects": {
+      "schema": "Project",
+      "description": "Premium real estate builder project specifications"
+    },
+    "leads": {
+      "schema": "Lead",
+      "description": "Client profile details acquired from webhooks and ads"
+    },
+    "tasks": {
+      "schema": "Task",
+      "description": "Task callback reminders aligned to clients"
+    },
+    "site_visits": {
+      "schema": "SiteVisit",
+      "description": "Site tour checklists and walkthrough logs"
+    },
+    "deals": {
+      "schema": "Deal",
+      "description": "Financial bookings ledger with brokerage accounting"
+    },
+    "activities": {
+      "schema": "Activity",
+      "description": "Timeline log stream for brokerage tracking"
+    },
+    "settings": {
+      "schema": "CRMSettings",
+      "description": "App-wide metadata preferences collection"
+    },
+    "automations": {
+      "schema": "AutomationRule",
+      "description": "Logic pipelines triggering automations"
+    }
+  }
+}

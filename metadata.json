@@ -1,0 +1,6 @@
+{
+  "name": "Dream Investment CRM",
+  "description": "Premium real estate brokerage CRM with real-time analytics, lead tracking, task management, WhatsApp workflow automation, and custom reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
